@@ -1,0 +1,52 @@
+#importing libaries
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+import numpy as np
+
+#uploading dataset
+from google.colab import files
+uploadedData = files.upload()
+for fn in uploaded.keys():
+  print('Uploaded File Name: "{name}" Length: {length} bytes'.format(
+      name=fn, length=len(uploaded[fn])))
+
+#setting dataset
+plt.rcParams['figure.figsize'] = (16, 9)
+X = np.loadtxt("data_Kclusters.txt")
+plt.scatter(X[:, 0], X[:, 1])
+plt.show() 
+
+#calculating distance of each point to the centeroid
+WCSS = []
+K = range(2,10)
+for this_k in K:
+    kmeanModel = KMeans(n_clusters = this_k)
+    kmeanModel.fit(X)
+    WCSS.append(kmeanModel.inertia_)
+ 
+# plotting the elbow to calculate k value
+plt.figure()
+plt.plot(K, WCSS, 'bx-')
+plt.xlabel('k')
+plt.ylabel('WCSS')
+plt.title('The Elbow Method showing the optimal k')
+plt.show() 
+
+
+
+# defining K means
+kmeans = KMeans(n_clusters=4)
+#Creating a model using X values
+kmeans = kmeans.fit(X)
+#Predicting the clusters using the X values
+labels = kmeans.predict(X)
+#Defining the centroid
+C = kmeans.cluster_centers_
+
+#plotting the figure showing the different clusters
+plt.figure()
+plt.scatter(X[:, 0], X[:, 1], c=labels)
+plt.scatter(C[:, 0], C[:, 1],  marker='*', c='#050505', s=1000)
+plt.show() 
+
+
